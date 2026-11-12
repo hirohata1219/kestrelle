@@ -94,9 +94,12 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
   padding-block: 0 clamp(28px, 6vh, 64px);
 }
 .hero h1 {
-  font-family: var(--f-display); font-style: italic; font-weight: 400;
-  font-size: clamp(56px, 10.5vw, 164px); line-height: .9; letter-spacing: -.01em;
-  color: #eef1f5; margin-top: 14px;
+  font-family: var(--f-display); font-style: italic; font-weight: 500;
+  font-size: clamp(56px, 10.5vw, 164px); line-height: .9; letter-spacing: 0;
+  /* lower optical size = thicker hairlines, so the thin strokes (e.g. the N's verticals) stay visible over the film */
+  font-optical-sizing: none; font-variation-settings: "opsz" 24;
+  color: #fff; margin-top: 14px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.55), 0 0 28px rgba(0,0,0,.45);
 }
 .hero h1 span { display: block; padding-left: .9em; }
 .hero .lede {
@@ -261,10 +264,29 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 @media (max-width: 820px) { .price .wrap { grid-template-columns: 1fr; } }
 
 /* ---------- Footer ---------- */
-footer { border-top: 1px solid var(--line); padding-block: 40px; }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: baseline; }
+footer { border-top: 1px solid var(--line); padding-block: 40px 48px; }
+footer .wrap { display: grid; gap: 22px; }
+.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; }
 footer .mark { font-size: 16px; }
-footer p { margin: 0; font-size: 12px; color: var(--steel-dim); max-width: 60ch; }
+.foot-nav { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.foot-nav a {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em;
+  text-decoration: none; color: var(--steel-dim); transition: color .3s;
+}
+.foot-nav a:hover { color: var(--rose); }
+.foot-note { margin: 0; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.8; color: var(--steel-dim); }
+
+/* phone: tighter rhythm between the big blocks */
+@media (max-width: 720px) {
+  .statement, .loupe-sec, .specs, .price { padding-block: 36px; }
+  .orbit { padding-block: 32px; }
+  .orbit-stage { gap: 24px; }
+  .loupe-sec header { margin-bottom: 20px; }
+  .loupe-grid, .specs .wrap, .price .wrap { gap: 24px; }
+  .statement .wrap { gap: 12px; }
+  .fig { padding-block: 22px; }
+  footer { padding-block: 32px 40px; }
+}
 .hero-copy .wrap > div { min-width: 0; }
 .notice {
   display: inline-block; max-width: 100%; box-sizing: border-box; margin-top: 18px; padding: 6px 12px;
@@ -419,8 +441,17 @@ footer p { margin: 0; font-size: 12px; color: var(--steel-dim); max-width: 60ch;
 
 <footer>
   <div class="wrap">
-    <span class="mark">KESTRELLE</span>
-    <p>このページは、架空のブランド「Kestrelle」による時計紹介ページのデザインサンプルです。ブランド名・商品・価格・仕様は実在しません。</p>
+    <div class="foot-top">
+      <span class="mark">KESTRELLE</span>
+      <nav class="foot-nav" aria-label="ページ内（フッター）">
+        <a href="#top">トップ</a>
+        <a href="#orbit">外観</a>
+        <a href="#loupe">ディテール</a>
+        <a href="#specs">仕様</a>
+        <a href="#price">価格</a>
+      </nav>
+    </div>
+    <p class="foot-note">このページは、架空のブランド「Kestrelle」による時計紹介ページのデザインサンプルです。ブランド名・商品・価格・仕様は実在しません。</p>
   </div>
 </footer>
 
