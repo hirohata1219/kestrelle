@@ -564,13 +564,10 @@ footer .mark { font-size: 16px; }
     const w = box.clientWidth, h = box.clientHeight;
     x = Math.min(w, Math.max(0, x)); y = Math.min(h, Math.max(0, y));
     const lw = lens.offsetWidth;
-    /* with a finger, the lens floats just above the fingertip (below it near the top edge),
+    /* with a finger, the lens always floats above the fingertip (half the earlier lift),
        while still showing what is under the finger */
     let ly = y;
-    if (touch) {
-      const off = lw / 2 + 44;
-      ly = (y - off - lw / 2 >= -lw * 0.25) ? y - off : y + off;
-    }
+    if (touch) ly = y - (lw / 2 + 44) / 2;
     lens.style.left = x + 'px'; lens.style.top = ly + 'px';
     /* map against the image as drawn (on phones it is zoomed past the frame) */
     const br = box.getBoundingClientRect(), ir = img.getBoundingClientRect();
