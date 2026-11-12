@@ -184,7 +184,7 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .loupe-sec header p { margin: 0; color: var(--steel-dim); max-width: 52ch; }
 .loupe-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 48px; align-items: center; }
 .loupe {
-  position: relative; border-radius: 2px; overflow: hidden; cursor: none; touch-action: pan-y;
+  position: relative; border-radius: 2px; overflow: hidden; cursor: none; touch-action: none; overscroll-behavior: contain;
   aspect-ratio: 1698 / 926; max-width: 100%; background: #000;
 }
 .loupe { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
@@ -580,6 +580,8 @@ footer .mark { font-size: 16px; }
   box.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') hide(); });
   box.addEventListener('pointercancel', hide);
   box.addEventListener('contextmenu', e => e.preventDefault());
+  /* while a finger is on the loupe, the page stays still (no scroll, no pinch) */
+  ['touchstart', 'touchmove'].forEach(t => box.addEventListener(t, e => { if (e.cancelable) e.preventDefault(); }, { passive: false }));
 
   /* drift-in */
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
