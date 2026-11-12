@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kestrelle Bleu Nocturne</title>
+<style>body { margin: 0; } img { max-width: 100%; } [hidden] { display: none !important; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=DM+Mono:wght@400;500&family=Shippori+Mincho+B1:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* Layout: a night-black showroom. Full-bleed film at the top, a scroll-driven orbit,
+   a loupe over the dial, then the movement's numbers set like a caseback engraving. */
+:root {
+  --ink: #06080c;          /* showroom black, slightly blue */
+  --night: #0b1222;        /* deep sunburst-dial navy */
+  --steel: #c8cdd5;        /* polished 316L case */
+  --steel-dim: #8a93a3;    /* brushed steel, secondary text */
+  --rose: #d9a184;         /* 5N rose-gold indices */
+  --line: rgba(200, 205, 213, .16);
+  --f-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-mincho: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  --wrap: 1180px;
+  color-scheme: dark;
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--ink);
+  color: var(--steel);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--ink);
+}
+a { color: inherit; }
+:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+.wrap {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: var(--gutter); padding-right: var(--gutter-r);
+}
+.eyebrow {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--rose);
+}
+h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
+
+/* ---------- Header ---------- */
+.site-head {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 9;
+  transition: background .5s ease, border-color .5s ease;
+  border-bottom: 1px solid transparent;
+}
+.site-head.solid { background: rgba(6, 8, 12, .94); border-color: var(--line); }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 18px; }
+.mark { font-family: var(--f-display); font-size: 20px; letter-spacing: .42em; text-decoration: none; color: var(--steel); }
+.site-head nav { display: flex; gap: 28px; }
+.site-head nav a {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  text-decoration: none; color: var(--steel-dim); transition: color .3s;
+}
+.site-head nav a:hover { color: var(--rose); }
+@media (max-width: 720px) { .site-head nav { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; height: clamp(560px, 92svh, 1000px); overflow: hidden;
+  background: #000;
+}
+.hero video, .hero .poster {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(6,8,12,.55) 0%, rgba(6,8,12,0) 22%, rgba(6,8,12,0) 55%, rgba(6,8,12,.92) 100%);
+}
+.hero-copy {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+}
+.hero-copy .wrap {
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 32px;
+  padding-block: 0 clamp(28px, 6vh, 64px);
+}
+.hero h1 {
+  font-family: var(--f-display); font-style: italic; font-weight: 400;
+  font-size: clamp(56px, 10.5vw, 164px); line-height: .9; letter-spacing: -.01em;
+  color: #eef1f5; margin-top: 14px;
+}
+.hero h1 span { display: block; padding-left: .9em; }
+.hero .lede {
+  font-family: var(--f-mincho); font-size: clamp(17px, 1.7vw, 22px); color: var(--steel);
+  margin: 22px 0 0; letter-spacing: .12em;
+}
+.beat {
+  min-width: 0; text-align: right; font-family: var(--f-mono); font-size: 12px; color: var(--steel-dim);
+  letter-spacing: .14em;
+}
+.beat .time { font-size: clamp(22px, 2.2vw, 30px); color: #eef1f5; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.beat .ticks { display: flex; gap: 5px; justify-content: flex-end; margin: 12px 0 10px; }
+.beat .ticks i { width: 14px; height: 2px; background: rgba(200,205,213,.18); transition: background .08s; }
+.beat .ticks i.on { background: var(--rose); }
+@media (max-width: 720px) {
+  .hero-copy .wrap { grid-template-columns: 1fr; gap: 20px; }
+  .beat { text-align: left; }
+  .beat .ticks { justify-content: flex-start; }
+  .hero h1 span { padding-left: .5em; }
+}
+/* load sequence: starts from a readable state, only drifts into place */
+@media (prefers-reduced-motion: no-preference) {
+  .hero .eyebrow, .hero h1, .hero .lede, .beat { animation: rise 1.6s cubic-bezier(.2,.7,.1,1) both; }
+  .hero h1 { animation-delay: .15s; }
+  .hero .lede { animation-delay: .35s; }
+  .beat { animation-delay: .5s; }
+}
+@keyframes rise { from { transform: translateY(18px); opacity: .55; } to { transform: none; opacity: 1; } }
+
+/* ---------- Statement ---------- */
+.statement { padding-block: clamp(96px, 16vh, 180px); }
+.statement .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 48px; }
+.statement p {
+  font-family: var(--f-mincho); font-size: clamp(22px, 2.6vw, 34px); line-height: 1.85;
+  color: #e7eaef; margin: 0; letter-spacing: .04em;
+}
+.statement p em { font-style: normal; color: var(--rose); }
+@media (max-width: 820px) { .statement .wrap { grid-template-columns: 1fr; gap: 20px; } }
+
+/* ---------- Orbit (scroll-scrubbed film) ---------- */
+.orbit { background: #000; padding-block: clamp(72px, 12vh, 140px); }
+.orbit-stage {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: var(--gutter); padding-right: var(--gutter-r);
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px); align-items: center;
+}
+.orbit-film { position: relative; min-width: 0; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
+.orbit-film video, .orbit-film img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.orbit-film::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.orbit-text { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.angle { font-family: var(--f-mono); font-size: 12px; letter-spacing: .2em; color: var(--steel-dim); }
+.angle b { font-weight: 400; font-size: 44px; color: #eef1f5; letter-spacing: 0; display: block; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.angle .track { height: 1px; background: var(--line); margin-top: 16px; position: relative; max-width: 280px; }
+.angle .track i { position: absolute; left: 0; top: -1px; height: 3px; width: 100%; background: var(--rose); transform-origin: left; transform: scaleX(0); }
+.stops { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+.stops li { border-left: 1px solid var(--line); padding-left: 20px; }
+.stops h3 { font-family: var(--f-mincho); font-size: 21px; color: #eef1f5; letter-spacing: .06em; }
+.stops .k { font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em; color: var(--rose); }
+.stops p { margin: 6px 0 0; font-size: 14px; color: var(--steel-dim); max-width: 34ch; }
+@media (max-width: 820px) {
+  .orbit-stage { grid-template-columns: 1fr; }
+  .stops { gap: 18px; }
+}
+
+/* ---------- Loupe ---------- */
+.loupe-sec { padding-block: clamp(96px, 14vh, 160px); background: linear-gradient(180deg, #000 0%, var(--ink) 30%); }
+.loupe-sec header { display: grid; gap: 14px; margin-bottom: 48px; }
+.loupe-sec h2, .specs h2, .price h2 { font-family: var(--f-mincho); font-size: clamp(28px, 3.6vw, 46px); color: #eef1f5; letter-spacing: .06em; }
+.loupe-sec header p { margin: 0; color: var(--steel-dim); max-width: 52ch; }
+.loupe-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.loupe {
+  position: relative; border-radius: 2px; overflow: hidden; cursor: none; touch-action: pan-y;
+  aspect-ratio: 1698 / 926; max-width: 100%; background: #000;
+}
+.loupe img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.lens {
+  position: absolute; width: clamp(130px, 18vw, 220px); aspect-ratio: 1; border-radius: 50%;
+  border: 1px solid rgba(217,161,132,.75);
+  box-shadow: 0 0 0 6px rgba(6,8,12,.55), 0 18px 50px rgba(0,0,0,.6);
+  background-image: url("watch.webp"); background-repeat: no-repeat; background-color: #000;
+  pointer-events: none; transform: translate(-50%, -50%);
+  opacity: 0; transition: opacity .25s ease;
+}
+.lens.on { opacity: 1; }
+.lens::after {
+  content: attr(data-mag); position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%);
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .2em; color: var(--rose); white-space: nowrap;
+}
+.details { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.details li { display: grid; grid-template-columns: 52px minmax(0,1fr); gap: 16px; padding-block: 20px; border-top: 1px solid var(--line); }
+.details li:last-child { border-bottom: 1px solid var(--line); }
+.details .k { font-family: var(--f-display); font-style: italic; font-size: 26px; color: var(--rose); line-height: 1.2; }
+.details h3 { font-family: var(--f-mincho); font-size: 18px; color: #eef1f5; }
+.details p { margin: 4px 0 0; font-size: 14px; color: var(--steel-dim); }
+.hint { font-family: var(--f-mono); font-size: 11px; letter-spacing: .18em; color: var(--steel-dim); margin-top: 14px; }
+@media (max-width: 900px) { .loupe-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Figures ---------- */
+.figures { border-block: 1px solid var(--line); background: var(--night); }
+.figures .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fig { padding-block: 44px; padding-inline: 20px; border-left: 1px solid var(--line); }
+.fig:first-child { border-left: 0; padding-left: 0; }
+.fig b {
+  display: block; font-family: var(--f-display); font-weight: 400; font-size: clamp(40px, 5vw, 68px);
+  color: #eef1f5; line-height: 1; font-variant-numeric: lining-nums tabular-nums;
+}
+.fig b small { font-family: var(--f-mono); font-size: 13px; color: var(--rose); margin-left: 6px; letter-spacing: .1em; }
+.fig span { display: block; margin-top: 12px; font-size: 13px; color: var(--steel-dim); }
+@media (max-width: 760px) {
+  .figures .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fig { padding-block: 28px; }
+  .fig:nth-child(3) { border-left: 0; padding-left: 0; }
+  .fig:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+/* ---------- Specs ---------- */
+.specs { padding-block: clamp(96px, 14vh, 160px); }
+.specs .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; }
+.specs header { display: grid; gap: 14px; align-content: start; }
+.specs header p { margin: 0; color: var(--steel-dim); font-size: 14px; }
+.spec-list { margin: 0; display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); }
+.spec-list dt, .spec-list dd { padding-block: 16px; border-top: 1px solid var(--line); margin: 0; }
+.spec-list dt { font-family: var(--f-mono); font-size: 11px; letter-spacing: .18em; color: var(--steel-dim); text-transform: uppercase; padding-top: 20px; }
+.spec-list dd { color: #e7eaef; font-size: 15px; }
+.spec-list dd .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+@media (max-width: 820px) {
+  .specs .wrap { grid-template-columns: 1fr; }
+  .spec-list { grid-template-columns: 1fr; }
+  .spec-list dd { border-top: 0; padding-top: 0; }
+}
+
+/* ---------- Price ---------- */
+.price { padding-block: clamp(80px, 12vh, 140px); position: relative; overflow: hidden; }
+.price .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.price-img { position: relative; min-width: 0; }
+.price-img img { display: block; width: 100%; max-width: 100%; }
+.price-copy { display: grid; gap: 18px; justify-items: start; min-width: 0; }
+.price .ref { font-family: var(--f-mono); font-size: 12px; letter-spacing: .2em; color: var(--steel-dim); }
+.price .amount {
+  font-family: var(--f-display); font-size: clamp(44px, 5.4vw, 76px); color: #eef1f5; line-height: 1;
+  font-variant-numeric: lining-nums;
+}
+.price .amount small { font-family: var(--f-body); font-size: 14px; color: var(--steel-dim); margin-left: 10px; }
+.price .limited { font-family: var(--f-mincho); color: var(--rose); letter-spacing: .1em; }
+.btn {
+  display: inline-flex; align-items: center; gap: 14px; margin-top: 10px;
+  padding: 16px 30px; border: 1px solid var(--rose); color: #eef1f5; text-decoration: none;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+  position: relative; overflow: hidden; transition: color .4s;
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; background: var(--rose); transform: scaleX(0);
+  transform-origin: left; transition: transform .5s cubic-bezier(.2,.7,.1,1); z-index: -1;
+}
+.btn { isolation: isolate; }
+.btn:hover { color: var(--ink); }
+.btn:hover::before { transform: scaleX(1); }
+@media (max-width: 820px) { .price .wrap { grid-template-columns: 1fr; } }
+
+/* ---------- Footer ---------- */
+footer { border-top: 1px solid var(--line); padding-block: 40px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: baseline; }
+footer .mark { font-size: 16px; }
+footer p { margin: 0; font-size: 12px; color: var(--steel-dim); max-width: 60ch; }
+.hero-copy .wrap > div { min-width: 0; }
+.notice {
+  display: inline-block; max-width: 100%; box-sizing: border-box; margin-top: 18px; padding: 6px 12px;
+  border: 1px solid var(--line); background: rgba(6, 8, 12, .6);
+  font-size: 12px; letter-spacing: .06em; color: var(--steel); line-height: 1.6;
+}
+
+/* gentle drift for blocks as they arrive (transform only; always readable) */
+@media (prefers-reduced-motion: no-preference) {
+  .drift { transform: translateY(28px); transition: transform 1.2s cubic-bezier(.2,.7,.1,1); }
+  .drift.in { transform: none; }
+}
+</style>
+
+<header class="site-head" id="head">
+  <div class="wrap">
+    <a class="mark" href="#top">KESTRELLE</a>
+    <nav aria-label="ページ内">
+      <a href="#orbit">外観</a>
+      <a href="#loupe">ディテール</a>
+      <a href="#specs">仕様</a>
+      <a href="#price">価格</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Bleu Nocturne">
+    <img class="poster" src="hero-poster.jpg" alt="黒い背景に置かれた、青い文字盤とローズゴールドのローマ数字のクロノグラフ">
+    <video id="heroVideo" data-src="hero-loop.mp4" poster="hero-poster.jpg" muted playsinline loop autoplay preload="auto" aria-hidden="true"></video>
+    <div class="hero-copy">
+      <div class="wrap">
+        <div>
+          <div class="eyebrow">Atelier Kestrelle · Collection Nocturne</div>
+          <h1>Bleu<span>Nocturne</span></h1>
+          <p class="lede">夜の深さを、手首に。</p>
+          <p class="notice">※ 架空のブランドの見本サイトです。実在の商品ではなく、販売もしていません。</p>
+        </div>
+        <div class="beat" aria-label="現在時刻">
+          <div class="time" id="clock">--:--:--</div>
+          <div class="ticks" id="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div>28,800 VPH · 1秒に8振動</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement">
+    <div class="wrap">
+      <div class="eyebrow">The Dial</div>
+      <p class="drift">真夜中の空を、放射状のサンバーストで描いた文字盤。光の角度で<em>群青</em>から<em>瑠璃色</em>へと表情を変え、12のローマ数字は5Nローズゴールドで一つずつ植字しています。</p>
+    </div>
+  </section>
+
+  <section class="orbit" id="orbit" aria-label="時計の周りを回って見る">
+    <div class="orbit-stage">
+      <div class="orbit-film">
+        <img src="orbit-first.jpg" alt="時計を真横から見た姿。ケースとリューズ、プッシャーが見える">
+        <video id="orbitVideo" data-src="orbit-loop.mp4" muted playsinline loop autoplay preload="auto" aria-hidden="true"></video>
+      </div>
+      <div class="orbit-text">
+        <ol class="stops" id="stops">
+          <li>
+            <h3>側面の厚さ 13.4 mm</h3>
+            <p>鏡面と筋目を交互に仕上げた316Lステンレス。袖口に収まる薄さを優先しました。</p>
+          </li>
+          <li>
+            <h3>リューズと2つのプッシャー</h3>
+            <p>2時位置でスタート・ストップ、4時位置でリセット。指先に返る手応えを調整しています。</p>
+          </li>
+          <li>
+            <h3>ボックス型サファイアクリスタル</h3>
+            <p>内側に反射防止のコーティング。斜めから見ても文字盤の青が沈みません。</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="loupe-sec" id="loupe">
+    <div class="wrap">
+      <header>
+        <div class="eyebrow">Under the Loupe</div>
+        <h2>ルーペで、細部まで。</h2>
+        <p>時計師が使う 2.5 倍のルーペを再現しました。画像の上でカーソルを動かすか、指でなぞってください。</p>
+      </header>
+      <div class="loupe-grid">
+        <div>
+          <div class="loupe" id="loupe-box">
+            <img id="loupeImg" src="watch.webp" alt="Bleu Nocturne の正面。青いサンバースト文字盤、ローズゴールドのローマ数字、3つのインダイアル" draggable="false">
+            <div class="lens" id="lens" data-mag="× 2.5"></div>
+          </div>
+          <div class="hint">画像の上でカーソルを動かす／指でなぞる</div>
+        </div>
+        <ul class="details">
+          <li><span class="k">i</span><div><h3>サンバースト文字盤</h3><p>中心から放射状に入れた筋目が、光を受けて青の濃淡を描きます。</p></div></li>
+          <li><span class="k">ii</span><div><h3>5N ローズゴールドのインデックス</h3><p>ローマ数字と針は同じ金色で揃え、暗い場所でも輪郭が残ります。</p></div></li>
+          <li><span class="k">iii</span><div><h3>3つのインダイアル</h3><p>12時に30分積算計、9時にスモールセコンド、6時に12時間積算計。</p></div></li>
+          <li><span class="k">iv</span><div><h3>アリゲーター調のレザーストラップ</h3><p>文字盤と同じミッドナイトブルーで染め、手縫いで仕上げています。</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="figures" aria-label="主な数値">
+    <div class="wrap">
+      <div class="fig"><b>42.0<small>mm</small></b><span>ケース径</span></div>
+      <div class="fig"><b>13.4<small>mm</small></b><span>ケースの厚さ</span></div>
+      <div class="fig"><b>58<small>h</small></b><span>パワーリザーブ</span></div>
+      <div class="fig"><b>10<small>bar</small></b><span>防水（100 m）</span></div>
+    </div>
+  </section>
+
+  <section class="specs" id="specs">
+    <div class="wrap">
+      <header>
+        <div class="eyebrow">Specifications</div>
+        <h2>仕様</h2>
+        <p>Ref. KS-4102-BL</p>
+      </header>
+      <dl class="spec-list">
+        <dt>Movement</dt><dd>自動巻きクロノグラフ　Cal. K-27 / <span class="num">27</span> 石</dd>
+        <dt>Frequency</dt><dd><span class="num">28,800</span> 振動／時（<span class="num">4</span> Hz）</dd>
+        <dt>Power reserve</dt><dd>約 <span class="num">58</span> 時間</dd>
+        <dt>Functions</dt><dd>時・分・スモールセコンド、<span class="num">30</span> 分積算計、<span class="num">12</span> 時間積算計</dd>
+        <dt>Case</dt><dd>316L ステンレススチール　径 <span class="num">42.0</span> mm／厚さ <span class="num">13.4</span> mm</dd>
+        <dt>Crystal</dt><dd>ボックス型サファイアクリスタル（内面反射防止）、シースルーバック</dd>
+        <dt>Dial</dt><dd>ミッドナイトブルー・サンバースト、5N ローズゴールドのアプライドインデックス</dd>
+        <dt>Water resistance</dt><dd><span class="num">10</span> 気圧（<span class="num">100</span> m）</dd>
+        <dt>Strap</dt><dd>アリゲーター調カーフレザー、ステンレスのピンバックル</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="price" id="price">
+    <div class="wrap">
+      <div class="price-img drift">
+        <img src="orbit-poster.jpg" alt="正面から見た Bleu Nocturne">
+      </div>
+      <div class="price-copy">
+        <div class="eyebrow">Bleu Nocturne</div>
+        <h2>世界限定 300 本</h2>
+        <div class="ref">REF. KS-4102-BL</div>
+        <div class="amount">¥1,980,000<small>税込</small></div>
+        <div class="limited">ケースバックにシリアル番号を刻印</div>
+        <p class="notice" style="margin-top:0">※ 価格・本数は見本のための架空の数字です。販売はしていません。</p>
+        <a class="btn" href="#specs">仕様をもう一度見る</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mark">KESTRELLE</span>
+    <p>このページは、架空のブランド「Kestrelle」による時計紹介ページのデザインサンプルです。ブランド名・商品・価格・仕様は実在しません。</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* header turns solid after the hero */
+  const head = document.getElementById('head');
+  const onHead = () => head.classList.toggle('solid', scrollY > 60);
+  addEventListener('scroll', onHead, { passive: true }); onHead();
+
+  /* films: fetch the published file, then hand it to the video as a blob: URL,
+     falling back to a data: URL if the frame refuses blob media */
+  const loadFilm = async (v) => {
+    try {
+      const res = await fetch(v.dataset.src);
+      if (!res.ok) throw new Error(res.status);
+      const blob = new Blob([await res.arrayBuffer()], { type: 'video/mp4' });
+      const toData = () => new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(blob); });
+      await new Promise((ok) => {
+        const fail = async () => { v.removeEventListener('error', fail); v.src = await toData(); v.load(); ok(); };
+        v.addEventListener('error', fail, { once: true });
+        v.addEventListener('loadedmetadata', ok, { once: true });
+        v.addEventListener('canplay', ok, { once: true });
+        v.src = URL.createObjectURL(blob); v.load();
+      });
+    } catch (e) {
+      /* opened from the PC (file://): fetch is refused, so point the video at the file directly */
+      await new Promise((ok) => {
+        v.addEventListener('loadedmetadata', ok, { once: true });
+        v.addEventListener('error', ok, { once: true });
+        v.src = v.dataset.src; v.load();
+      });
+    }
+  };
+  const hv = document.getElementById('heroVideo');
+  let heroIn = true;
+  const heroPlay = () => { if (heroIn) { const p = hv.play(); if (p) p.catch(() => {}); } };
+  loadFilm(hv).then(heroPlay);
+  new IntersectionObserver(es => es.forEach(e => {
+    heroIn = e.isIntersecting;
+    if (heroIn) heroPlay(); else hv.pause();
+  })).observe(hv.closest('.hero'));
+
+  /* live time with an 8-beat escapement (28,800 vph = 8 beats per second) */
+  const clock = document.getElementById('clock');
+  const ticks = [...document.querySelectorAll('#ticks i')];
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    const beat = Math.floor(d.getMilliseconds() / 125);
+    ticks.forEach((t, i) => t.classList.toggle('on', reduce ? false : i <= beat));
+  };
+  tick(); setInterval(tick, reduce ? 1000 : 125);
+
+  /* orbit: plays by itself (side → front → side) while on screen */
+  const sec = document.getElementById('orbit');
+  const ov = document.getElementById('orbitVideo');
+  let inView = false, ready = false;
+  const tryPlay = () => { if (ready && inView) { const p = ov.play(); if (p) p.catch(() => {}); } };
+  loadFilm(ov).then(() => { ready = true; tryPlay(); });
+  setTimeout(() => { ready = true; tryPlay(); }, 4000);
+  new IntersectionObserver(es => es.forEach(e => {
+    inView = e.isIntersecting;
+    if (inView) tryPlay(); else ov.pause();
+  }), { threshold: .25 }).observe(sec);
+
+  /* loupe */
+  const box = document.getElementById('loupe-box');
+  const img = document.getElementById('loupeImg');
+  const lens = document.getElementById('lens');
+  const MAG = 2.5;
+  const place = (x, y) => {
+    const w = box.clientWidth, h = box.clientHeight;
+    x = Math.min(w, Math.max(0, x)); y = Math.min(h, Math.max(0, y));
+    const lw = lens.offsetWidth;
+    lens.style.left = x + 'px'; lens.style.top = y + 'px';
+    lens.style.backgroundSize = (w * MAG) + 'px ' + (h * MAG) + 'px';
+    lens.style.backgroundPosition = (-(x * MAG - lw / 2)) + 'px ' + (-(y * MAG - lw / 2)) + 'px';
+  };
+  const rest = () => place(box.clientWidth * .5, box.clientHeight * .47);
+  const fromEvent = e => { const r = box.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); };
+  /* the lens appears only while the pointer or a finger is over the image */
+  const show = e => { fromEvent(e); lens.classList.add('on'); };
+  const hide = () => lens.classList.remove('on');
+  box.addEventListener('pointerenter', show);
+  box.addEventListener('pointermove', show);
+  box.addEventListener('pointerdown', show);
+  box.addEventListener('pointerleave', hide);
+  box.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') hide(); });
+  box.addEventListener('pointercancel', hide);
+
+  /* drift-in */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.drift').forEach(el => io.observe(el));
+})();
+</script>
