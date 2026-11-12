@@ -560,6 +560,11 @@ footer .mark { font-size: 16px; }
   const img = document.getElementById('loupeImg');
   const lens = document.getElementById('lens');
   const MAG = 2.5;
+  /* the lens lives outside the clipped frame, so it stays whole past the image's edges */
+  const holder = box.parentElement;
+  holder.style.position = 'relative';
+  lens.style.zIndex = '5';
+  holder.appendChild(lens);
   const place = (x, y, touch = false) => {
     const w = box.clientWidth, h = box.clientHeight;
     x = Math.min(w, Math.max(0, x)); y = Math.min(h, Math.max(0, y));
@@ -568,7 +573,7 @@ footer .mark { font-size: 16px; }
        while still showing what is under the finger */
     let ly = y;
     if (touch) ly = y - (lw / 2 + 44) / 2;
-    lens.style.left = x + 'px'; lens.style.top = ly + 'px';
+    lens.style.left = (box.offsetLeft + x) + 'px'; lens.style.top = (box.offsetTop + ly) + 'px';
     /* map against the image as drawn (on phones it is zoomed past the frame) */
     const br = box.getBoundingClientRect(), ir = img.getBoundingClientRect();
     const ix = ir.left - br.left, iy = ir.top - br.top;
