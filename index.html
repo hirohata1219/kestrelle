@@ -217,6 +217,7 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
    (in watch.webp the glass is ~31% of the width, centred at x 50% / y 46.5%) */
 @media (max-width: 720px) {
   .loupe { aspect-ratio: 1 / 1; }
+  .lens { --lens: min(230px, 58vw); }
   .loupe img {
     position: absolute; left: 50%; top: calc(50% - 0.465 * 310% * 926 / 1698);
     width: 310%; height: auto; max-width: none; transform: translateX(-50%);
