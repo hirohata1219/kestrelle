@@ -178,7 +178,9 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
   position: relative; border-radius: 2px; overflow: hidden; cursor: none; touch-action: pan-y;
   aspect-ratio: 1698 / 926; max-width: 100%; background: #000;
 }
-.loupe img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.loupe { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+/* no long-press menu (share / save image) on phones: the image itself takes no touches */
+.loupe img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none; pointer-events: none; }
 .lens {
   position: absolute; width: clamp(130px, 18vw, 220px); aspect-ratio: 1; border-radius: 50%;
   border: 1px solid rgba(217,161,132,.75);
@@ -265,21 +267,15 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 
 /* ---------- Footer ---------- */
 footer { border-top: 1px solid var(--line); padding-block: 40px 48px; }
-footer .wrap { display: grid; gap: 22px; }
-.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; }
+footer .wrap { display: grid; gap: 18px; justify-items: center; text-align: center; }
 footer .mark { font-size: 16px; }
-.foot-nav { display: flex; flex-wrap: wrap; gap: 10px 24px; }
-.foot-nav a {
-  font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em;
-  text-decoration: none; color: var(--steel-dim); transition: color .3s;
-}
-.foot-nav a:hover { color: var(--rose); }
-.foot-note { margin: 0; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.8; color: var(--steel-dim); }
+.foot-note { margin: 0; max-width: 100%; text-wrap: pretty; font-size: 12px; line-height: 1.8; color: var(--steel-dim); }
 
 /* phone: tighter rhythm between the big blocks */
 @media (max-width: 720px) {
-  .statement, .loupe-sec, .specs, .price { padding-block: 36px; }
-  .orbit { padding-block: 32px; }
+  .statement, .loupe-sec, .specs { padding-block: 36px; }
+  .price { padding-block: 0 36px; }
+  .orbit { padding-block: 0 32px; }
   .orbit-stage { gap: 24px; }
   .loupe-sec header { margin-bottom: 20px; }
   .loupe-grid, .specs .wrap, .price .wrap { gap: 24px; }
@@ -324,11 +320,6 @@ footer .mark { font-size: 16px; }
           <h1>Bleu<span>Nocturne</span></h1>
           <p class="lede">夜の深さを、手首に。</p>
           <p class="notice">※ 架空のブランドの見本サイトです。実在の商品ではなく、販売もしていません。</p>
-        </div>
-        <div class="beat" aria-label="現在時刻">
-          <div class="time" id="clock">--:--:--</div>
-          <div class="ticks" id="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <div>28,800 VPH · 1秒に8振動</div>
         </div>
       </div>
     </div>
@@ -379,7 +370,6 @@ footer .mark { font-size: 16px; }
             <img id="loupeImg" src="watch.webp" alt="Bleu Nocturne の正面。青いサンバースト文字盤、ローズゴールドのローマ数字、3つのインダイアル" draggable="false">
             <div class="lens" id="lens" data-mag="× 2.5"></div>
           </div>
-          <div class="hint">画像の上でカーソルを動かす／指でなぞる</div>
         </div>
         <ul class="details">
           <li><span class="k">i</span><div><h3>サンバースト文字盤</h3><p>中心から放射状に入れた筋目が、光を受けて青の濃淡を描きます。</p></div></li>
@@ -441,17 +431,8 @@ footer .mark { font-size: 16px; }
 
 <footer>
   <div class="wrap">
-    <div class="foot-top">
-      <span class="mark">KESTRELLE</span>
-      <nav class="foot-nav" aria-label="ページ内（フッター）">
-        <a href="#top">トップ</a>
-        <a href="#orbit">外観</a>
-        <a href="#loupe">ディテール</a>
-        <a href="#specs">仕様</a>
-        <a href="#price">価格</a>
-      </nav>
-    </div>
     <p class="foot-note">このページは、架空のブランド「Kestrelle」による時計紹介ページのデザインサンプルです。ブランド名・商品・価格・仕様は実在しません。</p>
+    <span class="mark">KESTRELLE</span>
   </div>
 </footer>
 
@@ -497,17 +478,6 @@ footer .mark { font-size: 16px; }
     if (heroIn) heroPlay(); else hv.pause();
   })).observe(hv.closest('.hero'));
 
-  /* live time with an 8-beat escapement (28,800 vph = 8 beats per second) */
-  const clock = document.getElementById('clock');
-  const ticks = [...document.querySelectorAll('#ticks i')];
-  const pad = n => String(n).padStart(2, '0');
-  const tick = () => {
-    const d = new Date();
-    clock.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    const beat = Math.floor(d.getMilliseconds() / 125);
-    ticks.forEach((t, i) => t.classList.toggle('on', reduce ? false : i <= beat));
-  };
-  tick(); setInterval(tick, reduce ? 1000 : 125);
 
   /* orbit: plays by itself (side → front → side) while on screen */
   const sec = document.getElementById('orbit');
@@ -545,6 +515,7 @@ footer .mark { font-size: 16px; }
   box.addEventListener('pointerleave', hide);
   box.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') hide(); });
   box.addEventListener('pointercancel', hide);
+  box.addEventListener('contextmenu', e => e.preventDefault());
 
   /* drift-in */
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
