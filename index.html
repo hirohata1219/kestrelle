@@ -560,11 +560,18 @@ footer .mark { font-size: 16px; }
   const img = document.getElementById('loupeImg');
   const lens = document.getElementById('lens');
   const MAG = 2.5;
-  const place = (x, y) => {
+  const place = (x, y, touch = false) => {
     const w = box.clientWidth, h = box.clientHeight;
     x = Math.min(w, Math.max(0, x)); y = Math.min(h, Math.max(0, y));
     const lw = lens.offsetWidth;
-    lens.style.left = x + 'px'; lens.style.top = y + 'px';
+    /* with a finger, the lens floats just above the fingertip (below it near the top edge),
+       while still showing what is under the finger */
+    let ly = y;
+    if (touch) {
+      const off = lw / 2 + 44;
+      ly = (y - off - lw / 2 >= -lw * 0.25) ? y - off : y + off;
+    }
+    lens.style.left = x + 'px'; lens.style.top = ly + 'px';
     /* map against the image as drawn (on phones it is zoomed past the frame) */
     const br = box.getBoundingClientRect(), ir = img.getBoundingClientRect();
     const ix = ir.left - br.left, iy = ir.top - br.top;
@@ -572,7 +579,7 @@ footer .mark { font-size: 16px; }
     lens.style.backgroundPosition = (-((x - ix) * MAG - lw / 2)) + 'px ' + (-((y - iy) * MAG - lw / 2)) + 'px';
   };
   const rest = () => place(box.clientWidth * .5, box.clientHeight * .47);
-  const fromEvent = e => { const r = box.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); };
+  const fromEvent = e => { const r = box.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top, e.pointerType !== 'mouse'); };
   /* the lens appears only while the pointer or a finger is over the image */
   const show = e => { fromEvent(e); lens.classList.add('on'); };
   const hide = () => lens.classList.remove('on');
