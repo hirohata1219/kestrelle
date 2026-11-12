@@ -191,7 +191,9 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 /* no long-press menu (share / save image) on phones: the image itself takes no touches */
 .loupe img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; -webkit-touch-callout: none; pointer-events: none; }
 .lens {
-  position: absolute; width: clamp(130px, 18vw, 220px); aspect-ratio: 1; border-radius: 50%;
+  /* fixed width AND height (not aspect-ratio): iPhone Safari stretched the lens as it moved */
+  --lens: clamp(130px, 18vw, 220px);
+  position: absolute; width: var(--lens); height: var(--lens); box-sizing: border-box; border-radius: 50%;
   border: 1px solid rgba(217,161,132,.75);
   box-shadow: 0 0 0 6px rgba(6,8,12,.55), 0 18px 50px rgba(0,0,0,.6);
   background-image: url("watch.webp"); background-repeat: no-repeat; background-color: #000;
