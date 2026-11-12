@@ -563,7 +563,7 @@ footer .mark { font-size: 16px; }
   /* the lens lives outside the clipped frame, so it stays whole past the image's edges */
   const holder = box.parentElement;
   holder.style.position = 'relative';
-  lens.style.zIndex = '5';
+  lens.style.zIndex = '20'; /* above the fixed header (9) and the safe-area strip (10) */
   holder.appendChild(lens);
   const place = (x, y, touch = false) => {
     const w = box.clientWidth, h = box.clientHeight;
