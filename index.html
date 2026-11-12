@@ -100,6 +100,8 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
    and the gap between "Bleu" and "Nocturne" sits halfway between the eyebrow and the lede */
 .hero.placed .hero-copy .eyebrow,
 .hero.placed .hero-copy h1 { position: absolute; left: var(--gutter); right: var(--gutter-r); margin: 0; }
+/* phone: the eyebrow and the lede close in on the title by the same amount */
+.hero.tight .hero-copy .lede { position: absolute; left: var(--gutter); right: var(--gutter-r); margin: 0; }
 .hero h1 {
   font-family: var(--f-display); font-style: italic; font-weight: 500;
   font-size: clamp(56px, 10.5vw, 164px); line-height: .9; letter-spacing: 0;
@@ -488,7 +490,10 @@ footer .mark { font-size: 16px; }
   const noct = h1.querySelector('span');
   const lede = hero.querySelector('.lede');
   const GLASS_TOP = 0.185; /* top of the watch glass, as a share of the film's height */
+  const phone = matchMedia('(max-width: 720px)');
+  const GAP = 18; /* phone: space above and below the title */
   const placeHero = () => {
+    hero.classList.remove('tight'); lede.style.top = '';
     const W = hero.clientWidth, H = hero.clientHeight;
     const scale = Math.max(W / 1920, H / 1080);
     const filmH = 1080 * scale;
@@ -506,6 +511,11 @@ footer .mark { font-size: 16px; }
       return;
     }
     h1.style.top = h1Top + 'px';
+    if (phone.matches) {
+      hero.classList.add('tight');
+      eb.style.top = (h1Top - GAP - eb.offsetHeight) + 'px';
+      lede.style.top = (h1Top + h1.offsetHeight + GAP) + 'px';
+    }
   };
   placeHero();
   addEventListener('resize', placeHero);
