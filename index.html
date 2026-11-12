@@ -87,12 +87,19 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
     linear-gradient(180deg, rgba(6,8,12,.55) 0%, rgba(6,8,12,0) 22%, rgba(6,8,12,0) 55%, rgba(6,8,12,.92) 100%);
 }
 .hero-copy {
-  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column;
 }
 .hero-copy .wrap {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px;
   padding-block: 0 clamp(28px, 6vh, 64px);
+  flex: 1 1 auto; width: 100%; position: relative;
+  box-sizing: border-box; max-width: calc(var(--wrap) + var(--gutter) + var(--gutter-r));
 }
+/* once measured (script below): the eyebrow sits at the top of the watch glass,
+   and the gap between "Bleu" and "Nocturne" sits halfway between the eyebrow and the lede */
+.hero.placed .hero-copy .eyebrow,
+.hero.placed .hero-copy h1 { position: absolute; left: var(--gutter); right: var(--gutter-r); margin: 0; }
 .hero h1 {
   font-family: var(--f-display); font-style: italic; font-weight: 500;
   font-size: clamp(56px, 10.5vw, 164px); line-height: .9; letter-spacing: 0;
@@ -473,6 +480,37 @@ footer .mark { font-size: 16px; }
       });
     }
   };
+  /* hero type placement, measured against the film (1920x1080, object-fit: cover) */
+  const hero = document.querySelector('.hero');
+  const heroImg = hero.querySelector('.poster');
+  const eb = hero.querySelector('.eyebrow');
+  const h1 = hero.querySelector('h1');
+  const noct = h1.querySelector('span');
+  const lede = hero.querySelector('.lede');
+  const GLASS_TOP = 0.185; /* top of the watch glass, as a share of the film's height */
+  const placeHero = () => {
+    const W = hero.clientWidth, H = hero.clientHeight;
+    const scale = Math.max(W / 1920, H / 1080);
+    const filmH = 1080 * scale;
+    const glass = heroImg.offsetTop + (H - filmH) / 2 + GLASS_TOP * filmH;
+    hero.classList.add('placed');
+    const ebTop = glass - eb.offsetHeight / 2;
+    eb.style.top = ebTop + 'px';
+    const ledeMid = lede.offsetTop + lede.offsetHeight / 2;
+    const mid = (glass + ledeMid) / 2;
+    /* the seam between the "Bleu" and "Nocturne" lines sits on that halfway line */
+    const h1Top = mid - noct.offsetTop;
+    /* not enough room (very short screens): fall back to the stacked layout */
+    if (h1Top < ebTop + eb.offsetHeight + 4 || h1Top + h1.offsetHeight > lede.offsetTop) {
+      hero.classList.remove('placed'); eb.style.top = h1.style.top = '';
+      return;
+    }
+    h1.style.top = h1Top + 'px';
+  };
+  placeHero();
+  addEventListener('resize', placeHero);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeHero);
+
   const hv = document.getElementById('heroVideo');
   let heroIn = true;
   const heroPlay = () => { if (heroIn) { const p = hv.play(); if (p) p.catch(() => {}); } };
