@@ -502,6 +502,7 @@ footer .mark { font-size: 16px; }
   const noct = h1.querySelector('span');
   const lede = hero.querySelector('.lede');
   const GLASS_TOP = 0.185; /* top of the watch glass, as a share of the film's height */
+  const WATCH_MID = 0.45;  /* centre of the dial (hand pivot), same measure — steady through the zoom */
   const phone = matchMedia('(max-width: 720px)');
   const GAP = 44; /* phone: space above and below the title */
   const placeHero = () => {
@@ -525,8 +526,13 @@ footer .mark { font-size: 16px; }
     h1.style.top = h1Top + 'px';
     if (phone.matches) {
       hero.classList.add('tight');
-      eb.style.top = (h1Top - GAP - eb.offsetHeight) + 'px';
+      /* the lede keeps its place; the line between "Bleu" and "Nocturne" moves up
+         to the centre of the watch, and the eyebrow follows the title */
       lede.style.top = (h1Top + h1.offsetHeight + GAP) + 'px';
+      const watchMid = heroImg.offsetTop + (H - filmH) / 2 + WATCH_MID * filmH;
+      const t = watchMid - noct.offsetTop;
+      h1.style.top = t + 'px';
+      eb.style.top = (t - GAP - eb.offsetHeight) + 'px';
     }
   };
   placeHero();
