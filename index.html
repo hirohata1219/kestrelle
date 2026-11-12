@@ -211,6 +211,15 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .details p { margin: 4px 0 0; font-size: 14px; color: var(--steel-dim); }
 .hint { font-family: var(--f-mono); font-size: 11px; letter-spacing: .18em; color: var(--steel-dim); margin-top: 14px; }
 @media (max-width: 900px) { .loupe-grid { grid-template-columns: 1fr; } }
+/* phone: square frame, zoomed so the watch glass fills it
+   (in watch.webp the glass is ~31% of the width, centred at x 50% / y 46.5%) */
+@media (max-width: 720px) {
+  .loupe { aspect-ratio: 1 / 1; }
+  .loupe img {
+    position: absolute; left: 50%; top: calc(50% - 0.465 * 310% * 926 / 1698);
+    width: 310%; height: auto; max-width: none; transform: translateX(-50%);
+  }
+}
 
 /* ---------- Figures ---------- */
 .figures { border-block: 1px solid var(--line); background: var(--night); }
@@ -491,7 +500,7 @@ footer .mark { font-size: 16px; }
   const lede = hero.querySelector('.lede');
   const GLASS_TOP = 0.185; /* top of the watch glass, as a share of the film's height */
   const phone = matchMedia('(max-width: 720px)');
-  const GAP = 32; /* phone: space above and below the title */
+  const GAP = 44; /* phone: space above and below the title */
   const placeHero = () => {
     hero.classList.remove('tight'); lede.style.top = '';
     const W = hero.clientWidth, H = hero.clientHeight;
@@ -553,8 +562,11 @@ footer .mark { font-size: 16px; }
     x = Math.min(w, Math.max(0, x)); y = Math.min(h, Math.max(0, y));
     const lw = lens.offsetWidth;
     lens.style.left = x + 'px'; lens.style.top = y + 'px';
-    lens.style.backgroundSize = (w * MAG) + 'px ' + (h * MAG) + 'px';
-    lens.style.backgroundPosition = (-(x * MAG - lw / 2)) + 'px ' + (-(y * MAG - lw / 2)) + 'px';
+    /* map against the image as drawn (on phones it is zoomed past the frame) */
+    const br = box.getBoundingClientRect(), ir = img.getBoundingClientRect();
+    const ix = ir.left - br.left, iy = ir.top - br.top;
+    lens.style.backgroundSize = (ir.width * MAG) + 'px ' + (ir.height * MAG) + 'px';
+    lens.style.backgroundPosition = (-((x - ix) * MAG - lw / 2)) + 'px ' + (-((y - iy) * MAG - lw / 2)) + 'px';
   };
   const rest = () => place(box.clientWidth * .5, box.clientHeight * .47);
   const fromEvent = e => { const r = box.getBoundingClientRect(); place(e.clientX - r.left, e.clientY - r.top); };
